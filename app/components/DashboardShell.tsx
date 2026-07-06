@@ -6,9 +6,22 @@ import WaitlistTab from "./WaitlistTab";
 import ContactsTab from "./ContactsTab";
 import CustomersTab from "./CustomersTab";
 import AnalyticsTab from "./AnalyticsTab";
+import ExecutiveSummaryTab from "./ExecutiveSummaryTab";
+import WebsiteTrafficTab from "./WebsiteTrafficTab";
+import SeoTab from "./SeoTab";
+import UserBehaviorTab from "./UserBehaviorTab";
 
-const TABS = ["Waitlist", "Contacts", "Customers", "Analytics"] as const;
-type Tab = (typeof TABS)[number];
+const TABS = [
+  "Executive Summary",
+  "Website Traffic",
+  "SEO",
+  "User Behavior",
+  "Waitlist",
+  "Contacts",
+  "Customers",
+  "Analytics",
+] as const;
+export type Tab = (typeof TABS)[number];
 
 export default function DashboardShell({
   waitlist,
@@ -21,7 +34,7 @@ export default function DashboardShell({
   customers: Customer[];
   live: boolean;
 }) {
-  const [tab, setTab] = useState<Tab>("Waitlist");
+  const [tab, setTab] = useState<Tab>("Executive Summary");
 
   return (
     <>
@@ -44,6 +57,12 @@ export default function DashboardShell({
       </nav>
 
       <main className="max-w-6xl mx-auto px-6 py-8">
+        {tab === "Executive Summary" && (
+          <ExecutiveSummaryTab waitlist={waitlist} contacts={contacts} onNavigate={setTab} />
+        )}
+        {tab === "Website Traffic" && <WebsiteTrafficTab />}
+        {tab === "SEO" && <SeoTab />}
+        {tab === "User Behavior" && <UserBehaviorTab />}
         {tab === "Waitlist" && <WaitlistTab initialEntries={waitlist} live={live} />}
         {tab === "Contacts" && <ContactsTab initialEntries={contacts} live={live} />}
         {tab === "Customers" && <CustomersTab initialEntries={customers} />}
