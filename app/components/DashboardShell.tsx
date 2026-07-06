@@ -10,12 +10,14 @@ import ExecutiveSummaryTab from "./ExecutiveSummaryTab";
 import WebsiteTrafficTab from "./WebsiteTrafficTab";
 import SeoTab from "./SeoTab";
 import UserBehaviorTab from "./UserBehaviorTab";
+import QuickActionsTab from "./QuickActionsTab";
 
 const TABS = [
   "Executive Summary",
   "Website Traffic",
   "SEO",
   "User Behavior",
+  "Quick Actions",
   "Waitlist",
   "Contacts",
   "Customers",
@@ -63,6 +65,7 @@ export default function DashboardShell({
         {tab === "Website Traffic" && <WebsiteTrafficTab />}
         {tab === "SEO" && <SeoTab />}
         {tab === "User Behavior" && <UserBehaviorTab />}
+        {tab === "Quick Actions" && <QuickActionsTab />}
         {tab === "Waitlist" && <WaitlistTab initialEntries={waitlist} live={live} />}
         {tab === "Contacts" && <ContactsTab initialEntries={contacts} live={live} />}
         {tab === "Customers" && <CustomersTab initialEntries={customers} />}
