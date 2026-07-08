@@ -19,6 +19,15 @@ Set these in `.env.local` (see `.env.local.example`):
 
 These are `NEXT_PUBLIC_` (not secrets — just URLs rendered client-side) and are inlined at build time, so restart `npm run dev` / redeploy after changing them.
 
+## Push notifications for new leads
+
+Netlify's outgoing webhook (`submission_created`) posts to `/api/notify/netlify-lead?secret=...`, which relays a formatted push to [ntfy.sh](https://ntfy.sh). Set these in `.env.local` (and in Vercel for production):
+
+- `NETLIFY_WEBHOOK_SECRET` — shared secret the webhook URL must include, so the endpoint can't be spammed by random traffic
+- `NTFY_TOPIC` — your private ntfy.sh topic name
+
+Subscribe to `https://ntfy.sh/<NTFY_TOPIC>` in the ntfy app (phone) or a browser tab (laptop) to receive pushes. This route is excluded from the dashboard's Basic Auth gate in `proxy.ts` since Netlify's webhook can't supply that password — it's authenticated by the `secret` query param instead.
+
 ## Getting Started
 
 First, run the development server:

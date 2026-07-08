@@ -29,5 +29,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/((?!_next/static|_next/image|favicon.ico).*)",
+  // api/notify/* routes authenticate incoming webhooks with their own shared
+  // secret (query param), since the caller (Netlify) can't supply Basic Auth.
+  matcher: "/((?!_next/static|_next/image|favicon.ico|api/notify/).*)",
 };
