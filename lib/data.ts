@@ -1,6 +1,12 @@
-import { fetchContactSubmissions, fetchWaitlistSubmissions, isUsingLiveData } from "./netlify";
+import {
+  fetchContactSubmissions,
+  fetchWaitlistSubmissions,
+  fetchTastingFeedbackSubmissions,
+  fetchSampleFeedbackSubmissions,
+  isUsingLiveData,
+} from "./netlify";
 import { getContactOverrides, getWaitlistOverrides } from "./store";
-import { ContactEntry, WaitlistEntry } from "./types";
+import { ContactEntry, WaitlistEntry, TastingFeedbackEntry, SampleFeedbackEntry } from "./types";
 
 export async function getWaitlistData(): Promise<{ entries: WaitlistEntry[]; live: boolean }> {
   const [submissions, overrides] = await Promise.all([
@@ -37,6 +43,42 @@ export async function getContactsData(): Promise<{ entries: ContactEntry[]; live
     followUpStatus:
       (overrides[s.id]?.followUpStatus as ContactEntry["followUpStatus"]) ?? "Open",
   }));
+
+  entries.sort(
+    (a, b) => new Date(b.dateSubmitted).getTime() - new Date(a.dateSubmitted).getTime()
+  );
+
+  return { entries, live: isUsingLiveData() };
+}
+
+export async function getTastingFeedbackData(): Promise<{
+  entries: TastingFeedbackEntry[];
+  live: boolean;
+}> {
+  const submissions = await fetchTastingFeedbackSubmissions();
+
+  const entries: TastingFeedbackEntry[] = submissions.map((s) => ({
+    id: s.id,
+    respondentName: s.respondentName,
+    respondentAge: s.respondentAge,
+    triedSamples: s.triedSamples,
+    dateSubmitted: s.dateSubmitted,
+  }));
+
+  entries.sort(
+    (a, b) => new Date(b.dateSubmitted).getTime() - new Date(a.dateSubmitted).getTime()
+  );
+
+  return { entries, live: isUsingLiveData() };
+}
+
+export async function getSampleFeedbackData(): Promise<{
+  entries: SampleFeedbackEntry[];
+  live: boolean;
+}> {
+  const submissions = await fetchSampleFeedbackSubmissions();
+
+  const entries: SampleFeedbackEntry[] = submissions.map((s) => ({ ...s }));
 
   entries.sort(
     (a, b) => new Date(b.dateSubmitted).getTime() - new Date(a.dateSubmitted).getTime()

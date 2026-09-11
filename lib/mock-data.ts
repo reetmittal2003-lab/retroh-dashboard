@@ -1,4 +1,4 @@
-import { WaitlistEntry, ContactEntry } from "./types";
+import { WaitlistEntry, ContactEntry, TastingFeedbackEntry, SampleFeedbackEntry } from "./types";
 
 const daysAgo = (n: number) => {
   const d = new Date();
@@ -44,5 +44,62 @@ export const mockContacts: ContactEntry[] = [
     message: "Do you ship to Kochi? Loved the packaging on Instagram.",
     dateSubmitted: daysAgo(9),
     followUpStatus: "Resolved",
+  },
+];
+
+export const mockTastingFeedback: TastingFeedbackEntry[] = [
+  {
+    id: "tf-1",
+    respondentName: "Kavya Reddy",
+    respondentAge: "25-34",
+    triedSamples: ["1AL", "NF / 2AL", "COCO / 1RC", "1CC"],
+    dateSubmitted: daysAgo(1),
+  },
+  {
+    id: "tf-2",
+    respondentName: "Arjun Malhotra",
+    respondentAge: "35-44",
+    triedSamples: ["1AL", "1CC"],
+    dateSubmitted: daysAgo(2),
+  },
+  {
+    id: "tf-3",
+    respondentName: "Ishita Bose",
+    respondentAge: "18-24",
+    triedSamples: ["NF / 2AL", "COCO / 1RC"],
+    dateSubmitted: daysAgo(4),
+  },
+];
+
+export const mockSampleFeedback: SampleFeedbackEntry[] = [
+  {
+    id: "sf-1",
+    cookie: "COCO / 1RC",
+    overall: "5",
+    taste: "5",
+    texture: "4",
+    sweetness: "Just right",
+    wouldBuy: "Yes",
+    likedMost: "The coconut flavor felt genuinely rich, not artificial.",
+    wouldChange: "Slightly less crumbly texture.",
+    anythingElse: "Would love a bigger pack size.",
+    name: "Rhea Kapoor",
+    contact: "rhea.k@example.com",
+    dateSubmitted: daysAgo(3),
+  },
+  {
+    id: "sf-2",
+    cookie: "1CC",
+    overall: "4",
+    taste: "4",
+    texture: "3",
+    sweetness: "Not sweet enough",
+    wouldBuy: "Maybe",
+    likedMost: "Great crunch.",
+    wouldChange: "Would add a touch more sweetness.",
+    anythingElse: "",
+    name: "Farhan Sheikh",
+    contact: "farhan.s@example.com",
+    dateSubmitted: daysAgo(6),
   },
 ];

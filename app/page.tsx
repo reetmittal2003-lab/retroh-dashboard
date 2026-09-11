@@ -1,15 +1,23 @@
-import { getContactsData, getWaitlistData } from "@/lib/data";
+import {
+  getContactsData,
+  getWaitlistData,
+  getTastingFeedbackData,
+  getSampleFeedbackData,
+} from "@/lib/data";
 import { getCustomers } from "@/lib/store";
 import DashboardShell from "./components/DashboardShell";
 
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
-  const [waitlistData, contactsData, customers] = await Promise.all([
-    getWaitlistData(),
-    getContactsData(),
-    getCustomers(),
-  ]);
+  const [waitlistData, contactsData, tastingFeedbackData, sampleFeedbackData, customers] =
+    await Promise.all([
+      getWaitlistData(),
+      getContactsData(),
+      getTastingFeedbackData(),
+      getSampleFeedbackData(),
+      getCustomers(),
+    ]);
 
   return (
     <div className="min-h-screen bg-[#faf9f6]">
@@ -25,6 +33,8 @@ export default async function Dashboard() {
       <DashboardShell
         waitlist={waitlistData.entries}
         contacts={contactsData.entries}
+        tastingFeedback={tastingFeedbackData.entries}
+        sampleFeedback={sampleFeedbackData.entries}
         customers={customers}
         live={waitlistData.live}
       />

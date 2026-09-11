@@ -1,5 +1,5 @@
-import { WaitlistEntry, ContactEntry } from "./types";
-import { mockWaitlist, mockContacts } from "./mock-data";
+import { WaitlistEntry, ContactEntry, TastingFeedbackEntry, SampleFeedbackEntry } from "./types";
+import { mockWaitlist, mockContacts, mockTastingFeedback, mockSampleFeedback } from "./mock-data";
 
 const NETLIFY_API = "https://api.netlify.com/api/v1";
 
@@ -83,6 +83,104 @@ export async function fetchContactSubmissions(): Promise<
     email: s.data.email ?? "",
     subject: s.data.subject ?? "",
     message: s.data.message ?? "",
+    dateSubmitted: s.created_at,
+  }));
+}
+
+export async function fetchTastingFeedbackSubmissions(): Promise<
+  Pick<TastingFeedbackEntry, "id" | "respondentName" | "respondentAge" | "triedSamples" | "dateSubmitted">[]
+> {
+  if (!isConfigured()) {
+    return mockTastingFeedback.map(
+      ({ id, respondentName, respondentAge, triedSamples, dateSubmitted }) => ({
+        id,
+        respondentName,
+        respondentAge,
+        triedSamples,
+        dateSubmitted,
+      })
+    );
+  }
+  const submissions = await getSubmissionsForForm("tasting-feedback");
+  return submissions.map((s) => ({
+    id: s.id,
+    respondentName: s.data.respondent_name ?? "",
+    respondentAge: s.data.respondent_age ?? "",
+    triedSamples: [
+      s.data["1al_tried"] ? "1AL" : null,
+      s.data["nf2al_tried"] ? "NF / 2AL" : null,
+      s.data["coco1rc_tried"] ? "COCO / 1RC" : null,
+      s.data["1cc_tried"] ? "1CC" : null,
+    ].filter((v): v is string => Boolean(v)),
+    dateSubmitted: s.created_at,
+  }));
+}
+
+export async function fetchSampleFeedbackSubmissions(): Promise<
+  Pick<
+    SampleFeedbackEntry,
+    | "id"
+    | "cookie"
+    | "overall"
+    | "taste"
+    | "texture"
+    | "sweetness"
+    | "wouldBuy"
+    | "likedMost"
+    | "wouldChange"
+    | "anythingElse"
+    | "name"
+    | "contact"
+    | "dateSubmitted"
+  >[]
+> {
+  if (!isConfigured()) {
+    return mockSampleFeedback.map(
+      ({
+        id,
+        cookie,
+        overall,
+        taste,
+        texture,
+        sweetness,
+        wouldBuy,
+        likedMost,
+        wouldChange,
+        anythingElse,
+        name,
+        contact,
+        dateSubmitted,
+      }) => ({
+        id,
+        cookie,
+        overall,
+        taste,
+        texture,
+        sweetness,
+        wouldBuy,
+        likedMost,
+        wouldChange,
+        anythingElse,
+        name,
+        contact,
+        dateSubmitted,
+      })
+    );
+  }
+  const submissions = await getSubmissionsForForm("sample-feedback");
+  return submissions.map((s) => ({
+    id: s.id,
+    cookie: s.data.cookie ?? "",
+    overall: s.data.overall ?? "",
+    taste: s.data.taste ?? "",
+    texture: s.data.texture ?? "",
+    sweetness: s.data.sweetness ?? "",
+    wouldBuy: s.data.would_buy ?? "",
+    likedMost: s.data.liked_most ?? "",
+    wouldChange: s.data.would_change ?? "",
+    anythingElse: s.data.anything_else ?? "",
+    name: s.data.name ?? "",
+    contact: s.data.contact ?? "",
     dateSubmitted: s.created_at,
   }));
 }
