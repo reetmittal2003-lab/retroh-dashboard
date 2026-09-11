@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Customer, ContactEntry, WaitlistEntry, TastingFeedbackEntry, SampleFeedbackEntry } from "@/lib/types";
+import { ContactEntry, WaitlistEntry, TastingFeedbackEntry } from "@/lib/types";
 import WaitlistTab from "./WaitlistTab";
 import ContactsTab from "./ContactsTab";
 import TastingFeedbackTab from "./TastingFeedbackTab";
-import SampleFeedbackTab from "./SampleFeedbackTab";
-import CustomersTab from "./CustomersTab";
 import AnalyticsTab from "./AnalyticsTab";
 import ExecutiveSummaryTab from "./ExecutiveSummaryTab";
 import WebsiteTrafficTab from "./WebsiteTrafficTab";
@@ -23,8 +21,6 @@ const TABS = [
   "Waitlist",
   "Contacts",
   "Tasting Feedback",
-  "Sample Feedback",
-  "Customers",
   "Analytics",
 ] as const;
 export type Tab = (typeof TABS)[number];
@@ -33,15 +29,11 @@ export default function DashboardShell({
   waitlist,
   contacts,
   tastingFeedback,
-  sampleFeedback,
-  customers,
   live,
 }: {
   waitlist: WaitlistEntry[];
   contacts: ContactEntry[];
   tastingFeedback: TastingFeedbackEntry[];
-  sampleFeedback: SampleFeedbackEntry[];
-  customers: Customer[];
   live: boolean;
 }) {
   const [tab, setTab] = useState<Tab>("Executive Summary");
@@ -79,10 +71,6 @@ export default function DashboardShell({
         {tab === "Tasting Feedback" && (
           <TastingFeedbackTab initialEntries={tastingFeedback} live={live} />
         )}
-        {tab === "Sample Feedback" && (
-          <SampleFeedbackTab initialEntries={sampleFeedback} live={live} />
-        )}
-        {tab === "Customers" && <CustomersTab initialEntries={customers} />}
         {tab === "Analytics" && <AnalyticsTab entries={waitlist} />}
       </main>
     </>

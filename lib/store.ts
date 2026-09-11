@@ -1,11 +1,9 @@
 import { getStore } from "@netlify/blobs";
-import { Customer } from "./types";
 import { mockWaitlist, mockContacts } from "./mock-data";
 
 type Store = {
   waitlistOverrides: Record<string, { status?: string; source?: string }>;
   contactOverrides: Record<string, { followUpStatus?: string }>;
-  customers: Customer[];
 };
 
 const BLOB_KEY = "dashboard-store";
@@ -23,38 +21,6 @@ const DEFAULT_CONTACT_OVERRIDES = Object.fromEntries(
 const DEFAULT_STORE: Store = {
   waitlistOverrides: DEFAULT_WAITLIST_OVERRIDES,
   contactOverrides: DEFAULT_CONTACT_OVERRIDES,
-  customers: [
-    {
-      id: "cust-1",
-      name: "FreshMart Grocers",
-      type: "Retailer",
-      email: "orders@freshmart.example.com",
-      phone: "+91 98765 43210",
-      location: "Mumbai, IN",
-      notes: "Interested in stocking the full snack range across 4 outlets.",
-      dateAdded: new Date().toISOString(),
-    },
-    {
-      id: "cust-2",
-      name: "Kavya Rao",
-      type: "Influencer",
-      email: "kavya.rao@example.com",
-      phone: "+91 90000 11122",
-      location: "Bengaluru, IN",
-      notes: "Food content creator, 80k followers. Sent a sample kit.",
-      dateAdded: new Date().toISOString(),
-    },
-    {
-      id: "cust-3",
-      name: "Coastal Foods Distribution",
-      type: "Distributor",
-      email: "partnerships@coastalfoods.example.com",
-      phone: "+91 98111 22334",
-      location: "Kochi, IN",
-      notes: "Covers Kerala + Tamil Nadu modern trade.",
-      dateAdded: new Date().toISOString(),
-    },
-  ],
 };
 
 function blobStore() {
@@ -107,40 +73,4 @@ export async function setContactFollowUp(id: string, followUpStatus: string) {
   store.contactOverrides[id] = { followUpStatus };
   await writeStore(store);
   return store.contactOverrides[id];
-}
-
-export async function getCustomers(): Promise<Customer[]> {
-  return (await readStore()).customers;
-}
-
-export async function addCustomer(
-  customer: Omit<Customer, "id" | "dateAdded">
-): Promise<Customer> {
-  const store = await readStore();
-  const newCustomer: Customer = {
-    ...customer,
-    id: `cust-${Date.now()}`,
-    dateAdded: new Date().toISOString(),
-  };
-  store.customers.unshift(newCustomer);
-  await writeStore(store);
-  return newCustomer;
-}
-
-export async function updateCustomer(
-  id: string,
-  update: Partial<Customer>
-): Promise<Customer | null> {
-  const store = await readStore();
-  const idx = store.customers.findIndex((c) => c.id === id);
-  if (idx === -1) return null;
-  store.customers[idx] = { ...store.customers[idx], ...update };
-  await writeStore(store);
-  return store.customers[idx];
-}
-
-export async function deleteCustomer(id: string) {
-  const store = await readStore();
-  store.customers = store.customers.filter((c) => c.id !== id);
-  await writeStore(store);
 }
