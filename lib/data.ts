@@ -63,6 +63,7 @@ export async function getTastingFeedbackData(): Promise<{
     respondentEmail: s.respondentEmail,
     triedSamples: s.triedSamples,
     dateSubmitted: s.dateSubmitted,
+    products: s.products,
   }));
 
   entries.sort(

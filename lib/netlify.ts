@@ -1,4 +1,15 @@
-import { WaitlistEntry, ContactEntry, TastingFeedbackEntry } from "./types";
+import {
+  WaitlistEntry,
+  ContactEntry,
+  TastingFeedbackEntry,
+  ProductKey,
+  ProductRating,
+  PRODUCT_KEYS,
+  PRODUCT_META,
+  Sweetness,
+  Aftertaste,
+  PricePref,
+} from "./types";
 import { mockWaitlist, mockContacts, mockTastingFeedback } from "./mock-data";
 
 const NETLIFY_API = "https://api.netlify.com/api/v1";
@@ -87,38 +98,69 @@ export async function fetchContactSubmissions(): Promise<
   }));
 }
 
+const SWEETNESS_VALUES: Sweetness[] = ["Too sweet", "Just right", "Not sweet enough"];
+const AFTERTASTE_VALUES: Aftertaste[] = ["None", "Pleasant", "Unpleasant"];
+const PRICE_VALUES: PricePref[] = ["₹100–120", "₹120–160", "₹160+"];
+
+function toRating1to5(v: string | undefined): number | null {
+  if (!v) return null;
+  const n = Number(v);
+  return Number.isInteger(n) && n >= 1 && n <= 5 ? n : null;
+}
+function toEnum<T extends string>(v: string | undefined, allowed: T[]): T | null {
+  return v && (allowed as string[]).includes(v) ? (v as T) : null;
+}
+function toTextOrNull(v: string | undefined): string | null {
+  const t = v?.trim();
+  return t ? t : null;
+}
+
+function parseProductRating(data: Record<string, string>, code: string): ProductRating {
+  const f = (key: string) => data[`${code}_${key}`];
+  return {
+    tried: f("tried") === "yes",
+    overall: toRating1to5(f("overall")),
+    taste: toRating1to5(f("taste")),
+    texture: toRating1to5(f("texture")),
+    sweetness: toEnum(f("sweetness"), SWEETNESS_VALUES),
+    aftertaste: toEnum(f("aftertaste"), AFTERTASTE_VALUES),
+    price: toEnum(f("price"), PRICE_VALUES),
+    notes: toTextOrNull(f("notes")),
+  };
+}
+
 export async function fetchTastingFeedbackSubmissions(): Promise<
   Pick<
     TastingFeedbackEntry,
-    "id" | "respondentName" | "respondentAge" | "respondentEmail" | "triedSamples" | "dateSubmitted"
+    | "id"
+    | "respondentName"
+    | "respondentAge"
+    | "respondentEmail"
+    | "triedSamples"
+    | "dateSubmitted"
+    | "products"
   >[]
 > {
   if (!isConfigured()) {
-    return mockTastingFeedback.map(
-      ({ id, respondentName, respondentAge, respondentEmail, triedSamples, dateSubmitted }) => ({
-        id,
-        respondentName,
-        respondentAge,
-        respondentEmail,
-        triedSamples,
-        dateSubmitted,
-      })
-    );
+    return mockTastingFeedback;
   }
   const submissions = await getSubmissionsForForm("tasting-feedback");
-  return submissions.map((s) => ({
-    id: s.id,
-    respondentName: s.data.respondent_name ?? "",
-    respondentAge: s.data.respondent_age ?? "",
-    respondentEmail: s.data.respondent_email ?? "",
-    triedSamples: [
-      s.data["1al_tried"] ? "1AL" : null,
-      s.data["nf2al_tried"] ? "NF / 2AL" : null,
-      s.data["coco1rc_tried"] ? "COCO / 1RC" : null,
-      s.data["1cc_tried"] ? "1CC" : null,
-    ].filter((v): v is string => Boolean(v)),
-    dateSubmitted: s.created_at,
-  }));
+  return submissions.map((s) => {
+    const products = Object.fromEntries(
+      PRODUCT_KEYS.map((key) => [key, parseProductRating(s.data, key)])
+    ) as Record<ProductKey, ProductRating>;
+    return {
+      id: s.id,
+      respondentName: s.data.respondent_name ?? "",
+      respondentAge: s.data.respondent_age ?? "",
+      respondentEmail: s.data.respondent_email ?? "",
+      triedSamples: PRODUCT_KEYS.filter((key) => products[key].tried).map(
+        (key) => PRODUCT_META[key].displayName ?? PRODUCT_META[key].code
+      ),
+      dateSubmitted: s.created_at,
+      products,
+    };
+  });
 }
 
 export function isUsingLiveData() {
