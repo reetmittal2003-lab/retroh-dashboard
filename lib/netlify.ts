@@ -58,7 +58,16 @@ async function getSubmissionsForForm(formName: string): Promise<NetlifySubmissio
   );
   const form = forms.find((f) => f.name === formName);
   if (!form) return [];
-  return netlifyFetch<NetlifySubmission[]>(`/forms/${form.id}/submissions`);
+  // Netlify returns at most 100 per page; walk every page so nothing is dropped.
+  const all: NetlifySubmission[] = [];
+  for (let page = 1; page <= 50; page++) {
+    const batch = await netlifyFetch<NetlifySubmission[]>(
+      `/forms/${form.id}/submissions?per_page=100&page=${page}`
+    );
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return all;
 }
 
 export async function fetchWaitlistSubmissions(): Promise<
@@ -146,7 +155,11 @@ export async function fetchTastingFeedbackSubmissions(): Promise<
   if (!isConfigured()) {
     return mockTastingFeedback;
   }
-  const submissions = await getSubmissionsForForm("tasting-feedback");
+  const all = await getSubmissionsForForm("tasting-feedback");
+  // A response re-submitted under new field names points back at its original;
+  // drop the original so it isn't counted twice.
+  const superseded = new Set(all.map((s) => s.data.original_submission_id).filter(Boolean));
+  const submissions = all.filter((s) => !superseded.has(s.id));
   return submissions.map((s) => {
     const products = Object.fromEntries(
       PRODUCT_KEYS.map((key) => [key, parseProductRating(s.data, key)])
@@ -159,7 +172,7 @@ export async function fetchTastingFeedbackSubmissions(): Promise<
       triedSamples: PRODUCT_KEYS.filter((key) => products[key].tried).map(
         (key) => PRODUCT_META[key].displayName ?? PRODUCT_META[key].code
       ),
-      dateSubmitted: s.created_at,
+      dateSubmitted: s.data.original_submitted_at || s.created_at,
       products,
     };
   });
