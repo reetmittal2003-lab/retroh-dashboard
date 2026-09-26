@@ -6,6 +6,7 @@ import {
   ProductRating,
   PRODUCT_KEYS,
   PRODUCT_META,
+  LEGACY_FIELD_PREFIXES,
   Sweetness,
   Aftertaste,
   PricePref,
@@ -115,8 +116,9 @@ function toTextOrNull(v: string | undefined): string | null {
   return t ? t : null;
 }
 
-function parseProductRating(data: Record<string, string>, code: string): ProductRating {
-  const f = (key: string) => data[`${code}_${key}`];
+function parseProductRating(data: Record<string, string>, key: ProductKey): ProductRating {
+  const legacy = LEGACY_FIELD_PREFIXES[key];
+  const f = (field: string) => data[`${key}_${field}`] ?? data[`${legacy}_${field}`];
   return {
     tried: f("tried") === "yes",
     overall: toRating1to5(f("overall")),

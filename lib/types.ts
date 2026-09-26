@@ -16,18 +16,26 @@ export type ContactEntry = {
   followUpStatus: "Open" | "In progress" | "Resolved";
 };
 
-// The four in-market trial codes the tasting form asks about today.
-// "productKey" is what the raw Netlify field names are prefixed with
-// (e.g. "1al_overall"); "displayName" is what we call it once it has a
-// public identity. NF/2AL has none yet — it's still an unnamed trial.
-export const PRODUCT_KEYS = ["1al", "nf2al", "coco1rc", "1cc"] as const;
+// The three cookies the tasting form asks about. Each key is also the prefix
+// of its Netlify field names (e.g. "butter_almond_overall"). nf2al is a retired
+// trial kept only so older responses still show up.
+export const PRODUCT_KEYS = ["butter_almond", "choco_chip", "coconut", "nf2al"] as const;
 export type ProductKey = (typeof PRODUCT_KEYS)[number];
 
 export const PRODUCT_META: Record<ProductKey, { code: string; displayName: string | null }> = {
-  "1al": { code: "1AL", displayName: "Butter Almond" },
+  butter_almond: { code: "Butter Almond", displayName: "Butter Almond" },
+  choco_chip: { code: "Choco Chip", displayName: "Choco Chip" },
+  coconut: { code: "Coconut", displayName: "Coconut" },
   nf2al: { code: "NF/2AL", displayName: null },
-  coco1rc: { code: "COCO/1RC", displayName: "Coconut Crunch" },
-  "1cc": { code: "1CC", displayName: "Choco Chip" },
+};
+
+// Field-name prefixes used by earlier versions of the form, so old
+// submissions still parse.
+export const LEGACY_FIELD_PREFIXES: Record<ProductKey, string> = {
+  butter_almond: "1al",
+  choco_chip: "1cc",
+  coconut: "coco1rc",
+  nf2al: "nf2al",
 };
 
 export type Sweetness = "Too sweet" | "Just right" | "Not sweet enough";

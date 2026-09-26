@@ -106,41 +106,41 @@ function tastingEntry(
 
 export const mockTastingFeedback: TastingFeedbackEntry[] = [
   tastingEntry("tf-1", "Kavya Reddy", "25–34", 1, {
-    "1al": rated({ overall: 4, taste: 4, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Really buttery, almonds came through nicely." }),
+    butter_almond: rated({ overall: 4, taste: 4, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Really buttery, almonds came through nicely." }),
     nf2al: rated({ overall: 3, taste: 3, texture: 3, sweetness: "Not sweet enough", aftertaste: "None", price: "₹100–120", notes: "Felt a bit plain compared to the others." }),
-    coco1rc: rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Coconut flavour is strong, loved it." }),
-    "1cc": rated({ overall: 4, taste: 5, texture: 3, sweetness: "Too sweet", aftertaste: "Pleasant", price: "₹120–160", notes: "Texture a bit too soft for a choco chip cookie." }),
+    coconut: rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Coconut flavour is strong, loved it." }),
+    choco_chip: rated({ overall: 4, taste: 5, texture: 3, sweetness: "Too sweet", aftertaste: "Pleasant", price: "₹120–160", notes: "Texture a bit too soft for a choco chip cookie." }),
   }),
   tastingEntry("tf-2", "Arjun Malhotra", "35–44", 2, {
-    "1al": rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Best of the four, would buy immediately." }),
-    "1cc": rated({ overall: 3, taste: 4, texture: 2, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft and a bit too sweet for my taste." }),
+    butter_almond: rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Best of the four, would buy immediately." }),
+    choco_chip: rated({ overall: 3, taste: 4, texture: 2, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft and a bit too sweet for my taste." }),
   }),
   tastingEntry("tf-3", "Ishita Bose", "18–24", 4, {
     nf2al: rated({ overall: 3, taste: 3, texture: 4, sweetness: "Just right", aftertaste: "None", price: "₹100–120", notes: null }),
-    coco1rc: rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Nostalgic, tastes like the coconut biscuits from childhood." }),
+    coconut: rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Nostalgic, tastes like the coconut biscuits from childhood." }),
   }),
   tastingEntry("tf-4", "Rhea Kapoor", "25–34", 5, {
-    "1al": rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Solid, nothing to change." }),
-    coco1rc: rated({ overall: 3, taste: 3, texture: 3, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "A little too sweet, aftertaste lingered." }),
-    "1cc": rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Perfect balance, this is the one." }),
+    butter_almond: rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Solid, nothing to change." }),
+    coconut: rated({ overall: 3, taste: 3, texture: 3, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "A little too sweet, aftertaste lingered." }),
+    choco_chip: rated({ overall: 5, taste: 5, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Perfect balance, this is the one." }),
   }),
   tastingEntry("tf-5", "Vivaan Shah", "45–54", 7, {
-    "1al": rated({ overall: 4, taste: 4, texture: 3, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: null }),
+    butter_almond: rated({ overall: 4, taste: 4, texture: 3, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: null }),
     nf2al: rated({ overall: 2, taste: 2, texture: 3, sweetness: "Not sweet enough", aftertaste: "Unpleasant", price: "₹100–120", notes: "Didn't stand out, felt unfinished." }),
-    "1cc": rated({ overall: 4, taste: 4, texture: 3, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Good, texture could be a touch crunchier." }),
+    choco_chip: rated({ overall: 4, taste: 4, texture: 3, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: "Good, texture could be a touch crunchier." }),
   }),
   tastingEntry("tf-6", "Ananya Iyer", "18–24", 8, {
-    coco1rc: rated({ overall: 5, taste: 5, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Favourite by far." }),
-    "1cc": rated({ overall: 3, taste: 3, texture: 2, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft, felt underbaked." }),
+    coconut: rated({ overall: 5, taste: 5, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Favourite by far." }),
+    choco_chip: rated({ overall: 3, taste: 3, texture: 2, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft, felt underbaked." }),
   }),
   tastingEntry("tf-7", "Karthik Nair", "35–44", 10, {
-    "1al": rated({ overall: 3, taste: 3, texture: 3, sweetness: "Just right", aftertaste: "None", price: "₹100–120", notes: "Fine, not memorable." }),
+    butter_almond: rated({ overall: 3, taste: 3, texture: 3, sweetness: "Just right", aftertaste: "None", price: "₹100–120", notes: "Fine, not memorable." }),
     nf2al: rated({ overall: 3, taste: 3, texture: 3, sweetness: "Just right", aftertaste: "None", price: "₹100–120", notes: null }),
-    coco1rc: rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: null }),
-    "1cc": rated({ overall: 4, taste: 4, texture: 3, sweetness: "Too sweet", aftertaste: "Pleasant", price: "₹120–160", notes: "Sweetness on the edge but still good." }),
+    coconut: rated({ overall: 4, taste: 4, texture: 4, sweetness: "Just right", aftertaste: "Pleasant", price: "₹120–160", notes: null }),
+    choco_chip: rated({ overall: 4, taste: 4, texture: 3, sweetness: "Too sweet", aftertaste: "Pleasant", price: "₹120–160", notes: "Sweetness on the edge but still good." }),
   }),
   tastingEntry("tf-8", "Meher Chawla", "55+", 12, {
-    "1al": rated({ overall: 5, taste: 4, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Reminds me of homemade almond cookies." }),
-    "1cc": rated({ overall: 2, taste: 3, texture: 1, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft and too sweet, needs work." }),
+    butter_almond: rated({ overall: 5, taste: 4, texture: 5, sweetness: "Just right", aftertaste: "Pleasant", price: "₹160+", notes: "Reminds me of homemade almond cookies." }),
+    choco_chip: rated({ overall: 2, taste: 3, texture: 1, sweetness: "Too sweet", aftertaste: "Unpleasant", price: "₹100–120", notes: "Too soft and too sweet, needs work." }),
   }),
 ];

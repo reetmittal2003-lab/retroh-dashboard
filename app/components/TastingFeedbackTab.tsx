@@ -124,7 +124,7 @@ export default function TastingFeedbackTab({
 }) {
   const [subTab, setSubTab] = useState<SubTab>("Overview");
   const [search, setSearch] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<ProductKey>("1al");
+  const [selectedProduct, setSelectedProduct] = useState<ProductKey>("butter_almond");
 
   const overview = useMemo(() => buildOverview(initialEntries), [initialEntries]);
   const products = useMemo(() => summarizeAllProducts(initialEntries), [initialEntries]);
