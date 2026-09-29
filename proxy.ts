@@ -31,5 +31,8 @@ export function proxy(request: NextRequest) {
 export const config = {
   // api/notify/* routes authenticate incoming webhooks with their own shared
   // secret (query param), since the caller (Netlify) can't supply Basic Auth.
-  matcher: "/((?!_next/static|_next/image|favicon.ico|api/notify/).*)",
+  // manifest.webmanifest and icons/* must be reachable unauthenticated —
+  // browsers fetch them directly (no credentials) to decide installability.
+  matcher:
+    "/((?!_next/static|_next/image|favicon.ico|api/notify/|manifest.webmanifest|icons/).*)",
 };
